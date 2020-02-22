@@ -7,6 +7,7 @@ let addWindow;
 app.on('ready', () => {
   mainWindow = new BrowserWindow({});
   mainWindow.loadURL(`file://${__dirname}/main.html`);
+  mainWindow.on('closed', () => app.quit());
 
   const mainMenu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(mainMenu);
@@ -18,6 +19,7 @@ function createAddWindow() {
     height: 200,
     title: 'Add new TODO'
   });
+  addWindow.loadURL(`file://${__dirname}/add.html`);
 }
 
 const menuTemplate = [
@@ -26,6 +28,7 @@ const menuTemplate = [
     submenu: [
       {
         label: 'New Todo',
+        accelerator: process.platform === 'darwin' ? 'Command+N' : 'Ctrl+N',
         click() {
           createAddWindow();
         }
