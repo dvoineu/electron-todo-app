@@ -5,7 +5,11 @@ let mainWindow;
 let addWindow;
 
 app.on('ready', () => {
-  mainWindow = new BrowserWindow({});
+  mainWindow = new BrowserWindow({
+    // webPreferences: {
+    //   nodeIntegration: true
+    // }
+  });
   mainWindow.loadURL(`file://${__dirname}/main.html`);
   mainWindow.on('closed', () => app.quit());
 
@@ -47,3 +51,23 @@ const menuTemplate = [
 if (process.platform === 'darwin') {
   menuTemplate.unshift({ label: '' });
 }
+
+if (process.env.NODE_ENV !== 'production') {
+  menuTemplate.push({
+    label: 'Dev',
+    submenu: [
+      {
+        label: 'Toggle Developer Tools',
+        accelerator:
+          process.platform === 'darwin' ? 'Command+Alt+J' : 'Ctrl+Alt+J',
+        click(item, focusedWindow) {
+          focusedWindow.toggleDevTools();
+        }
+      }
+    ]
+  });
+}
+// 'production'
+//  'development'
+// 'staging'
+// 'test'
